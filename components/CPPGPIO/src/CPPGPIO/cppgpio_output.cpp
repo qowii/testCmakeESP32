@@ -1,3 +1,4 @@
+#include<esp_event.h>
 #include "CPPGPIO/cppgpio.h"
 
 namespace CPPGPIO

@@ -1,3 +1,4 @@
+#include<esp_event.h>
 #include "CPPGPIO/cppgpio.h"
 
 namespace CPPGPIO
@@ -160,7 +161,7 @@ namespace CPPGPIO
     {
         esp_err_t status{ESP_OK};
 
-        taskENTER_CRITICAL(&_eventChangeMutex);
+        portENTER_CRITICAL(&_eventChangeMutex);
 
         status = _clearEventHandlers();
 
@@ -171,7 +172,7 @@ namespace CPPGPIO
             _interrupt_args._event_handler_set = true;
         }
 
-        taskEXIT_CRITICAL(&_eventChangeMutex);
+        portEXIT_CRITICAL(&_eventChangeMutex);
 
         return status;
     }
@@ -180,7 +181,7 @@ namespace CPPGPIO
     {
         esp_err_t status{ESP_OK};
 
-        taskENTER_CRITICAL(&_eventChangeMutex);
+        portENTER_CRITICAL(&_eventChangeMutex);
 
         status = _clearEventHandlers();
 
@@ -193,18 +194,18 @@ namespace CPPGPIO
             _interrupt_args._custom_event_handler_set = true;
         }
 
-        taskEXIT_CRITICAL(&_eventChangeMutex);
+        portEXIT_CRITICAL(&_eventChangeMutex);
 
         return status;
     }
 
     void GpioInput::setQueueHandle(xQueueHandle Gpio_e_q)
     {
-        taskENTER_CRITICAL(&_eventChangeMutex);
+        portENTER_CRITICAL(&_eventChangeMutex);
         _clearEventHandlers();
         _interrupt_args._queue_handle = Gpio_e_q;
         _interrupt_args._queue_enabled = true;
-        taskEXIT_CRITICAL(&_eventChangeMutex);
+        portEXIT_CRITICAL(&_eventChangeMutex);
     }
 
     esp_err_t GpioInput::_clearEventHandlers()
