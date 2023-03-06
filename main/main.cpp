@@ -1,23 +1,12 @@
-#include <iostream>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+#include <stdio.h>
+#include "CPPGPIO/cppgpio.h"
 
-#include "main.h"
-
-void HelloCMake::run(int i)
-{
-    std::cout << "Hello World from C++ "<< i << '\n';
-    vTaskDelay(pdMS_TO_TICKS(1000));
-}
+CPPGPIO::GpioOutput led {GPIO_NUM_2};
 
 extern "C" void app_main(void)
 {
-    HelloCMake App;
-    int i = 0;
-
-    while (true)
-    {
-        App.run(i);
-        i++;
-    }
+    led.on();
+    vTaskDelay(pdTICKS_TO_MS(1000));
+    led.off();
+    vTaskDelay(pdTICKS_TO_MS(1000));
 }
